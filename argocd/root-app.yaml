@@ -1,0 +1,29 @@
+# Application racine (app-of-apps). A appliquer une seule fois manuellement
+# dans argocd-greg pour bootstrapper le reste :
+#   kubectl apply -n argocd-greg -f argocd/root-app.yaml
+#
+# Elle surveille argocd/apps/ et cree/supprime les Applications enfants
+# (cert-manager, cluster-api-operator, cluster-api-providers) au fur et a
+# mesure des changements dans ce repo.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root
+  namespace: argocd-greg
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Ellipsis-GF/k8s-formation-gitops.git
+    targetRevision: main
+    path: argocd/apps
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-greg
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

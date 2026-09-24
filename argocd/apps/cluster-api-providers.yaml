@@ -1,0 +1,23 @@
+# Applique les CR Provider (CoreProvider + InfrastructureProvider GCP)
+# consommes par cluster-api-operator. Reste un Application separee pour
+# pouvoir la resynchroniser independamment de l'operateur.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-api-providers
+  namespace: argocd-greg
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Ellipsis-GF/k8s-formation-gitops.git
+    targetRevision: main
+    path: argocd/providers
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: capi-operator-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

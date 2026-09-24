@@ -1,0 +1,33 @@
+# Installe cluster-api-operator via son chart Helm officiel, dans le
+# namespace capi-operator-system deja cree (avec ses secrets). Le chart
+# installe uniquement l'operateur (CRDs Provider + controller) ; les CR
+# CoreProvider/InfrastructureProvider sont geres par l'Application
+# cluster-api-providers (argocd/providers).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-api-operator
+  namespace: argocd-greg
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes-sigs.github.io/cluster-api-operator
+    chart: cluster-api-operator
+    targetRevision: 0.16.0
+    helm:
+      releaseName: cluster-api-operator
+      valuesObject:
+        cert-manager:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: capi-operator-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
