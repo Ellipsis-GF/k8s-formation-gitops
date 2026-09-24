@@ -1,0 +1,12 @@
+# Control plane GKE (regional autopilot standard). Pas de controlPlaneVersion
+# fixe : GKE choisit la version par defaut du releaseChannel "regular".
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: GCPManagedControlPlane
+metadata:
+  name: cluster-a
+  namespace: cluster-a
+spec:
+  project: k8s-formation
+  location: europe-west9
+  clusterName: cluster-a
+  releaseChannel: regular

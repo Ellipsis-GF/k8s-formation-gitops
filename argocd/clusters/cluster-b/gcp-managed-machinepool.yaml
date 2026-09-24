@@ -1,0 +1,8 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: GCPManagedMachinePool
+metadata:
+  name: cluster-b-mp-0
+  namespace: cluster-b
+spec:
+  nodePoolName: cluster-b-pool-0
+  machineType: e2-medium

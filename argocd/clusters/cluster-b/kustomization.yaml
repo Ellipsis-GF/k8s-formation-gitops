@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - cluster.yaml
+  - gcp-managed-cluster.yaml
+  - gcp-managed-control-plane.yaml
+  - machinepool.yaml
+  - gcp-managed-machinepool.yaml

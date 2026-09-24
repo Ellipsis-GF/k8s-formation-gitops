@@ -1,0 +1,19 @@
+# dataSecretName: "" est requis pour un MachinePool GKE : GKE bootstrap
+# lui-meme les noeuds, CAPI n'a pas de cloud-init/kubeadm a fournir ici.
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachinePool
+metadata:
+  name: cluster-a-mp-0
+  namespace: cluster-a
+spec:
+  clusterName: cluster-a
+  replicas: 2
+  template:
+    spec:
+      clusterName: cluster-a
+      bootstrap:
+        dataSecretName: ""
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        kind: GCPManagedMachinePool
+        name: cluster-a-mp-0
