@@ -1,5 +1,8 @@
-# Control plane GKE (regional autopilot standard). Pas de controlPlaneVersion
-# fixe : GKE choisit la version par defaut du releaseChannel "regular".
+# Cluster zonal (pas regional) : europe-west9 a 3 zones, et un cluster GKE
+# regional exige un nombre de workers multiple de 3 par node pool. On reste
+# sur 2 workers en zonal pour respecter la demande initiale. Pas de
+# controlPlaneVersion fixe : GKE choisit la version par defaut du
+# releaseChannel "regular".
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: GCPManagedControlPlane
 metadata:
@@ -7,6 +10,6 @@ metadata:
   namespace: cluster-b
 spec:
   project: k8s-formation
-  location: europe-west9
+  location: europe-west9-a
   clusterName: cluster-b
   releaseChannel: regular
