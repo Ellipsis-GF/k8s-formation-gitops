@@ -6,3 +6,9 @@ metadata:
 spec:
   project: k8s-formation
   region: europe-west9
+  # network.name explicite : contourne un bug connu de CAPG v1.8.1 qui
+  # deference spec.network.name sans verifier qu'il est defini (panic nil
+  # pointer dans createCluster), corrige seulement a partir de la v1.12.0.
+  # https://github.com/kubernetes-sigs/cluster-api-provider-gcp/pull/1761
+  network:
+    name: default
