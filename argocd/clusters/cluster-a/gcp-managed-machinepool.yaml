@@ -6,3 +6,5 @@ metadata:
 spec:
   nodePoolName: cluster-a-pool-0
   machineType: e2-medium
+  nodeLocations:
+    - europe-west9-a
