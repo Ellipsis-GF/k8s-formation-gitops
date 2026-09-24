@@ -38,11 +38,9 @@ confirmer/ajuster selon ce qui est deja valide dans ton environnement :
 | CoreProvider (CAPI)     | `providers/core-provider.yaml`                   | v1.9.5    |
 | InfrastructureProvider gcp (CAPG) | `providers/infrastructure-provider-gcp.yaml` | v1.8.1    |
 
-`repoURL` pointe sur `https://github.com/Ellipsis-GF/k8s-formation-gitops.git`
-(remote `origin` de ce repo). Si Argo CD est configure pour cloner en SSH,
-remplacer par `git@github.com:Ellipsis-GF/k8s-formation-gitops.git` et
-verifier que le `Repository` credential correspondant existe dans
-`argocd-greg`.
+`repoURL` pointe sur `git@github.com:Ellipsis-GF/k8s-formation-gitops.git`
+(SSH), pour matcher le Secret `repo-capi-gitops` (label
+`argocd.argoproj.io/secret-type=repository`) deja cree dans `argocd-greg`.
 
 ## Bootstrap
 
