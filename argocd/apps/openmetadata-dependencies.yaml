@@ -17,6 +17,14 @@ spec:
     helm:
       releaseName: openmetadata-dependencies
       valuesObject:
+        # Airflow desactive : "sans Airflow" (cf. commentaire plus haut).
+        # Sans ce flag le chart le deploie quand meme, et son PVC de logs
+        # partage (ReadWriteMany + Filesystem) est impossible a provisionner
+        # sur du Persistent Disk GCP (standard-rwo) qui ne supporte le
+        # multi-writer qu'en mode Block, pas Filesystem -> pods Airflow
+        # bloques en Pending indefiniment.
+        airflow:
+          enabled: false
         mysql:
           enabled: true
           auth:
