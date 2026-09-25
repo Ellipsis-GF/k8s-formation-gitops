@@ -43,9 +43,6 @@ spec:
                 ingestionImage: docker.getcollate.io/openmetadata/ingestion-base:2.0.2
                 serviceAccountName: openmetadata-ingestion
                 resources:
-                  requests:
-                    cpu: 100m
-                    memory: 256Mi
                   limits:
                     cpu: 500m
                     memory: 1Gi
@@ -54,9 +51,6 @@ spec:
         service:
           type: ClusterIP
         resources:
-          requests:
-            cpu: 300m
-            memory: 768Mi
           limits:
             cpu: 1
             memory: 1536Mi

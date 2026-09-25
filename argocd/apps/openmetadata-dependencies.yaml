@@ -31,9 +31,6 @@ spec:
               size: 10Gi
             resourcesPreset: none
             resources:
-              requests:
-                cpu: 100m
-                memory: 256Mi
               limits:
                 cpu: 500m
                 memory: 768Mi
@@ -43,9 +40,6 @@ spec:
           persistence:
             size: 10Gi
           resources:
-            requests:
-              cpu: 100m
-              memory: 512Mi
             limits:
               cpu: 750m
               memory: 1Gi
