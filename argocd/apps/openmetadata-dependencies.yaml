@@ -1,0 +1,70 @@
+# Installe les dependances minimales d'OpenMetadata sur cluster-a.
+# Configuration de formation : MySQL + OpenSearch, sans Airflow. Les
+# ingestions seront executees par des Jobs Kubernetes par le chart principal.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openmetadata-dependencies
+  namespace: argocd-greg
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  source:
+    repoURL: https://helm.open-metadata.org
+    chart: openmetadata-dependencies
+    targetRevision: 2.0.2
+    helm:
+      releaseName: openmetadata-dependencies
+      valuesObject:
+        mysql:
+          enabled: true
+          auth:
+            existingSecret: openmetadata-db-secret
+            database: openmetadata_db
+            username: openmetadata_user
+          initdbScripts:
+            init_openmetadata_db_scripts.sql: ""
+            init_airflow_db_scripts.sql: ""
+          primary:
+            persistence:
+              size: 10Gi
+            resourcesPreset: none
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                cpu: 500m
+                memory: 768Mi
+        opensearch:
+          enabled: true
+          opensearchJavaOpts: "-Xms512m -Xmx512m"
+          persistence:
+            size: 10Gi
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 750m
+              memory: 1Gi
+          # OpenSearch requiert vm.max_map_count=262144.
+          sysctlInit:
+            enabled: true
+  destination:
+    name: cluster-a
+    namespace: openmetadata
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

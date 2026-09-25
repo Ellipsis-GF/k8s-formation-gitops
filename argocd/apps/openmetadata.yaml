@@ -1,0 +1,78 @@
+# Installe OpenMetadata sur cluster-a une fois MySQL et OpenSearch declares.
+# Le client de pipelines Kubernetes evite de deployer Airflow sur le worker
+# e2-medium du cluster de formation.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openmetadata
+  namespace: argocd-greg
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+spec:
+  project: default
+  source:
+    repoURL: https://helm.open-metadata.org
+    chart: openmetadata
+    targetRevision: 2.0.2
+    helm:
+      releaseName: openmetadata
+      valuesObject:
+        replicaCount: 1
+        openmetadata:
+          config:
+            deployPipelinesConfig:
+              enabled: false
+            database:
+              host: mysql
+              databaseName: openmetadata_db
+              auth:
+                username: openmetadata_user
+                # Secret genere par le sous-chart MySQL des dependances.
+                password:
+                  secretRef: openmetadata-db-secret
+                  secretKey: mysql-password
+            elasticsearch:
+              host: opensearch
+              searchType: opensearch
+            pipelineServiceClientConfig:
+              enabled: true
+              type: k8s
+              metadataApiEndpoint: http://openmetadata:8585/api
+              k8s:
+                namespace: openmetadata
+                ingestionImage: docker.getcollate.io/openmetadata/ingestion-base:2.0.2
+                serviceAccountName: openmetadata-ingestion
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 256Mi
+                  limits:
+                    cpu: 500m
+                    memory: 1Gi
+                rbac:
+                  enabled: true
+        service:
+          type: ClusterIP
+        resources:
+          requests:
+            cpu: 300m
+            memory: 768Mi
+          limits:
+            cpu: 1
+            memory: 1536Mi
+  destination:
+    name: cluster-a
+    namespace: openmetadata
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
