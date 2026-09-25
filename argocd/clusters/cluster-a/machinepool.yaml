@@ -7,7 +7,8 @@ metadata:
   namespace: cluster-a
 spec:
   clusterName: cluster-a
-  replicas: 1
+  # 3 = multiple de 3 exige par un node pool regional (1 par zone)
+  replicas: 3
   template:
     spec:
       clusterName: cluster-a

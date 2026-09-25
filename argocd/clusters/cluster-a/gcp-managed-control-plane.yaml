@@ -1,6 +1,13 @@
-# Cluster zonal (pas regional) : europe-west9 a 3 zones, et un cluster GKE
-# regional exige un nombre de workers multiple de 3 par node pool. Pas de
-# controlPlaneVersion fixe : GKE choisit la version par defaut du
+# Cluster regional (pas zonal) : necessaire car CAPG v1.8.1 tronque
+# toujours location a la region dans ManagedMachinePoolScope.NodePoolLocation()
+# (util/location.Parse + Region()), meme quand le control plane est zonal.
+# Sur un cluster zonal ca produit un chemin d'API GKE invalide
+# (projects/.../locations/<region>/clusters/... au lieu de .../<zone>/...)
+# et le node pool reste bloque en NotFound. Pas de fix connu, bug present
+# aussi sur main. En regional, 3 zones => 3 workers (1 par zone), c'est
+# la contrainte GKE "nombre de workers multiple de 3 par node pool
+# regional" evoquee plus haut dans l'historique.
+# Pas de controlPlaneVersion fixe : GKE choisit la version par defaut du
 # releaseChannel "regular".
 # clusterNetwork explicite : sans lui, le controller CAPG v1.8.1 panique
 # (nil pointer dereference dans createCluster) au moment de creer le
@@ -12,7 +19,7 @@ metadata:
   namespace: cluster-a
 spec:
   project: k8s-formation
-  location: europe-west9-a
+  location: europe-west9
   clusterName: cluster-a
   releaseChannel: regular
   clusterNetwork:
