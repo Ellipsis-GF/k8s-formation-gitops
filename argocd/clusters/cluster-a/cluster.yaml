@@ -8,6 +8,8 @@ kind: Cluster
 metadata:
   name: cluster-a
   namespace: cluster-a
+  labels:
+    rbac-bootstrap: capg-operator
 spec:
   clusterNetwork:
     pods:

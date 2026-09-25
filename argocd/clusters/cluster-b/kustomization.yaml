@@ -6,3 +6,4 @@ resources:
   - gcp-managed-control-plane.yaml
   - machinepool.yaml
   - gcp-managed-machinepool.yaml
+  - rbac-bootstrap.yaml
