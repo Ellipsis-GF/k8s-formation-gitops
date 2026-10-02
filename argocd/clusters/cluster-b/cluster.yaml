@@ -12,7 +12,7 @@ metadata:
     rbac-bootstrap: capg-operator
 spec:
   controlPlaneEndpoint:
-    host: gke-094f633eb8fe49b2ab46314784d66a31a72c-346709096447.europe-west9-a.gke.goog
+    host: gke-cad95dd7ce9c4293b8e25218356e6e98b0c5-346709096447.europe-west9-a.gke.goog
     port: 443
   clusterNetwork:
     pods:
