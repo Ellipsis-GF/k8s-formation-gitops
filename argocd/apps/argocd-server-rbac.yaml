@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: git@github.com:Ellipsis-GF/k8s-formation-gitops.git
     targetRevision: main
-    path: argocd/rbac
+    path: argocd/argocd-server-rbac
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
