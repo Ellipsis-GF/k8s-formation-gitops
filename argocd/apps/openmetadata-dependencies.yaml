@@ -27,6 +27,11 @@ spec:
           enabled: false
         mysql:
           enabled: true
+          serviceAccount:
+            create: true
+            name: mysql
+            annotations:
+              argocd.argoproj.io/sync-wave: "-1"
           auth:
             existingSecret: openmetadata-db-secret
             database: openmetadata_db
