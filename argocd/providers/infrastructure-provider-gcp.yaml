@@ -18,4 +18,4 @@ spec:
   deployment:
     containers:
       - name: manager
-        imageUrl: europe-west1-docker.pkg.dev/k8s-formation/k8s-lab/capg-dns-endpoint@sha256:f6c70e059fea2f3cfb10d52e6b984a5cd24fc2e158ea5f0ba4253b52869c0447
+        imageUrl: europe-west1-docker.pkg.dev/k8s-formation/k8s-lab/capg-dns-endpoint@sha256:69a67378ca90c53300ea1967c5b1dbefe7a6ff876ba3f3997a0c60917293f10d
