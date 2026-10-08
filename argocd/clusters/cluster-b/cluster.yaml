@@ -22,8 +22,10 @@ spec:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: GCPManagedControlPlane
     name: cluster-b
+    namespace: cluster-b
 
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: GCPManagedCluster
     name: cluster-b
+    namespace: cluster-b

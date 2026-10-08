@@ -19,7 +19,9 @@ spec:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: GCPManagedCluster
     name: cluster-a
+    namespace: cluster-a
   controlPlaneRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: GCPManagedControlPlane
     name: cluster-a
+    namespace: cluster-a
