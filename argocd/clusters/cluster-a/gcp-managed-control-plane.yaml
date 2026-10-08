@@ -1,23 +1,23 @@
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: GCPManagedControlPlane
 metadata:
-  name: cluster-a
-  namespace: cluster-a
+  name: cluster-a
+  namespace: cluster-a
 spec:
-  project: k8s-formation
-  location: europe-west9-a
-  clusterName: cluster-a
-  releaseChannel: regular
+  project: k8s-formation
+  location: europe-west9-a
+  clusterName: cluster-a
+  releaseChannel: regular
 
-  controlPlaneAccess:
-    dnsAccess: true
-    ipAccess: false
+  controlPlaneAccess:
+    dnsAccess: true
+    ipAccess: false
 
-  argoCDClusterSecretRef:
-    namespace: argocd-khalil
-    name: argocd-cluster-a
+  argoCDClusterSecretRef:
+    namespace: argocd-khalil
+    name: argocd-cluster-a
 
-  clusterNetwork:
-    useIPAliases: true
-    pod:
-      cidrBlock: 192.168.0.0/16
+  clusterNetwork:
+    useIPAliases: true
+    pod:
+      cidrBlock: 192.168.0.0/16
