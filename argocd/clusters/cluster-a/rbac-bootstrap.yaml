@@ -1,6 +1,7 @@
 # ClusterResourceSet CAPI : applique automatiquement, a la creation du
-# cluster GKE, un ClusterRoleBinding donnant cluster-admin a l'identite
-# capg-operator. Necessaire car GKE exige soit une permission IAM
+# cluster GKE, les ClusterRoleBindings donnant cluster-admin aux identites
+# capg-operator, argocd-cluster-manager et capi-workload-manager.
+# Necessaire car GKE exige soit une permission IAM
 # (container.roles.create / container.roleBindings.create, absente de
 # roles/editor) soit un role RBAC in-cluster pour que kubectl (via
 # ArgoCD) puisse creer des Role/RoleBinding (ex: hooks Helm openmetadata).
@@ -23,7 +24,7 @@ data:
       kind: ClusterRole
       name: cluster-admin
       apiGroup: rbac.authorization.k8s.io
-    
+
   argocd-clusterrolebinding.yaml: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
@@ -32,6 +33,19 @@ data:
     subjects:
       - kind: User
         name: argocd-cluster-manager@k8s-formation.iam.gserviceaccount.com
+        apiGroup: rbac.authorization.k8s.io
+    roleRef:
+      kind: ClusterRole
+      name: cluster-admin
+      apiGroup: rbac.authorization.k8s.io
+  capi-clusterrolebinding.yaml: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      name: capi-workload-manager-admin
+    subjects:
+      - kind: User
+        name: capi-workload-manager@k8s-formation.iam.gserviceaccount.com
         apiGroup: rbac.authorization.k8s.io
     roleRef:
       kind: ClusterRole
