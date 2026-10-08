@@ -8,10 +8,14 @@ metadata:
   name: gcp
   namespace: capi-operator-system
 spec:
-  version: v1.8.1
+  version: v1.8.2-dns.1
+  fetchConfig:
+    selector:
+      matchLabels:
+        provider-components: gcp-dns-recreation
   configSecret:
     name: capi-variables
   deployment:
     containers:
       - name: manager
-        imageUrl: europe-west1-docker.pkg.dev/k8s-formation/k8s-lab/capg-dns-endpoint@sha256:70fc57efd2e4c1721123ffe56266e6f61c12965c397813d99fc8a2f7395dceb5
+        imageUrl: europe-west1-docker.pkg.dev/k8s-formation/k8s-lab/capg-dns-endpoint@sha256:f6c70e059fea2f3cfb10d52e6b984a5cd24fc2e158ea5f0ba4253b52869c0447
