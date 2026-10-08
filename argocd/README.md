@@ -1,7 +1,7 @@
 # cert-manager + Cluster API via Argo CD (argocd-greg)
 
 Pattern app-of-apps : une `Application` racine (`root-app.yaml`) surveille
-`argocd/apps/`, qui declare sept `Application` enfants.
+`argocd/apps/`, qui declare les `Application` enfants.
 
 ```text
 root (argocd-greg)
@@ -17,7 +17,7 @@ root (argocd-greg)
             |
             +-- cluster-a (GKE manage, ns cluster-a, 1 MachinePool, 1 worker)
             `-- cluster-b (GKE manage, ns cluster-b, 1 MachinePool, 1 worker)
-    +-- cluster-a-registration       (wave 4, enregistre cluster-a dans Argo CD)
+    +-- cluster-registration         (wave 2, labels des Secrets Argo CD pour A et B)
     +-- openmetadata-dependencies    (wave 5, cluster-a, MySQL + OpenSearch)
     `-- openmetadata                 (wave 6, cluster-a, serveur + Jobs Kubernetes)
 ```
@@ -77,10 +77,18 @@ minutes une fois les CR synchronisees par Argo CD.
 
 Les Applications `openmetadata-dependencies` et `openmetadata` ciblent le
 cluster Argo CD nomme `cluster-a`, dans le namespace `openmetadata`.
-L'Application `cluster-a-registration` cree cette destination automatiquement
-a partir du Secret `cluster-a/cluster-a-kubeconfig` genere par Cluster API. Un
-CronJob rafraichit ensuite les donnees d'acces toutes les 30 minutes ; aucun
-kubeconfig ni jeton n'est stocke dans Git.
+L'Application `cluster-registration` maintient les Secrets `argocd-cluster-a`
+et `argocd-cluster-b` dans `argocd-greg`, avec leur nom de cluster et le label
+`argocd.argoproj.io/secret-type: cluster`. Elle les synchronise automatiquement
+et retablit le label s'il est retire.
+
+Les donnees d'authentification (`data.config`) doivent etre provisionnees hors
+Git avant le premier enregistrement. Les manifests seuls ne generent pas de
+credentials et ne suffisent donc pas a connecter un cluster neuf a Argo CD.
+CAPG actualise l'endpoint DNS (`data.server`) via `argoCDClusterSecretRef`.
+Ces deux champs sont ignores au diff et preserves au sync ; la migration du
+`kubectl apply` initial est desactivee pour conserver ses champs existants.
+Les Secrets sont conserves lors d'un prune ou de la suppression de l'Application.
 
 La configuration est volontairement reduite pour le cluster de formation :
 

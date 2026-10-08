@@ -1,0 +1,40 @@
+# Maintient les enregistrements Argo CD avant les clusters workload (wave 3).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-registration
+  namespace: argocd-greg
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:Ellipsis-GF/k8s-formation-gitops.git
+    targetRevision: main
+    path: argocd/cluster-registration
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-greg
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: argocd-cluster-a
+      namespace: argocd-greg
+      jsonPointers:
+        - /data/config
+        - /data/server
+    - group: ""
+      kind: Secret
+      name: argocd-cluster-b
+      namespace: argocd-greg
+      jsonPointers:
+        - /data/config
+        - /data/server
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - DisableClientSideApplyMigration=true
+      - RespectIgnoreDifferences=true
