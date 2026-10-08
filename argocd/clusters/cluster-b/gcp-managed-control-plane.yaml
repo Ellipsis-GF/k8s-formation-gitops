@@ -1,10 +1,3 @@
-# Cluster zonal (pas regional) : europe-west9 a 3 zones, et un cluster GKE
-# regional exige un nombre de workers multiple de 3 par node pool. Pas de
-# controlPlaneVersion fixe : GKE choisit la version par defaut du
-# releaseChannel "regular".
-# clusterNetwork explicite : sans lui, le controller CAPG v1.8.1 panique
-# (nil pointer dereference dans createCluster) au moment de creer le
-# cluster GKE.
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: GCPManagedControlPlane
 metadata:
@@ -15,6 +8,12 @@ spec:
   location: europe-west9-a
   clusterName: cluster-b
   releaseChannel: regular
+  controlPlaneAccess:
+    dnsAccess: true
+    ipAccess: false
+  argoCDClusterSecretRef:
+    namespace: argocd-greg
+    name: argocd-cluster-b
   clusterNetwork:
     useIPAliases: true
     pod:

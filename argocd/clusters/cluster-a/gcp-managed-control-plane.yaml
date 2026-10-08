@@ -14,7 +14,7 @@ spec:
     ipAccess: false
 
   argoCDClusterSecretRef:
-    namespace: argocd-khalil
+    namespace: argocd-greg
     name: argocd-cluster-a
 
   clusterNetwork:
