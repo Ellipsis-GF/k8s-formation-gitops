@@ -27,13 +27,17 @@ spec:
           enabled: false
         mysql:
           enabled: true
+          fullnameOverride: mysql
           serviceAccount:
             create: true
             name: mysql
             annotations:
               argocd.argoproj.io/sync-wave: "-1"
           auth:
-            existingSecret: openmetadata-db-secret
+            # Le chart cree le Secret mysql. Valeurs de formation stables
+            # pour eviter une regeneration des mots de passe au rendu Helm.
+            rootPassword: password
+            password: openmetadata_password
             database: openmetadata_db
             username: openmetadata_user
           initdbScripts:

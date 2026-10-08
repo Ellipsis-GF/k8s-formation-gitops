@@ -29,7 +29,7 @@ spec:
                 username: openmetadata_user
                 # Secret genere par le sous-chart MySQL des dependances.
                 password:
-                  secretRef: openmetadata-db-secret
+                  secretRef: mysql
                   secretKey: mysql-password
             elasticsearch:
               host: opensearch
