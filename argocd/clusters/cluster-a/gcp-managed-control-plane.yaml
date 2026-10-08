@@ -13,9 +13,11 @@ spec:
     dnsAccess: true
     ipAccess: false
 
-  argoCDClusterSecretRef:
-    namespace: argocd-greg
-    name: argocd-cluster-a
+  argoCDClusterSecretRefs:
+    - namespace: argocd-greg
+      name: argocd-cluster-a
+    - namespace: argocd-khalil
+      name: argocd-cluster-a
 
   clusterNetwork:
     useIPAliases: true

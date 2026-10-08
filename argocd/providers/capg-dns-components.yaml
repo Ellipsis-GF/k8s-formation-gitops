@@ -2383,6 +2383,8 @@ data:
                     description: |-
                       ArgoCDClusterSecretRef keeps an existing Argo CD registration's DNS endpoint
                       current after GKE cluster recreation. Authentication is not replaced.
+                      Deprecated: use ArgoCDClusterSecretRefs when more than one Argo CD instance
+                      registers this cluster.
                     properties:
                       name:
                         description: Name is the name of an existing Secret labelled as
@@ -2397,6 +2399,34 @@ data:
                     - name
                     - namespace
                     type: object
+                  argoCDClusterSecretRefs:
+                    description: |-
+                      ArgoCDClusterSecretRefs keeps multiple existing Argo CD registrations' DNS
+                      endpoints current after GKE cluster recreation. A failure in one registration
+                      does not prevent the other registrations from being updated.
+                    items:
+                      description: |-
+                        ArgoCDClusterSecretReference identifies an existing Argo CD cluster Secret.
+                        CAPG updates its endpoint, preserving the registered cluster name and identity.
+                      properties:
+                        name:
+                          description: Name is the name of an existing Secret labelled
+                            as an Argo CD cluster.
+                          minLength: 1
+                          type: string
+                        namespace:
+                          description: Namespace is the namespace of the Argo CD instance.
+                          minLength: 1
+                          type: string
+                      required:
+                      - name
+                      - namespace
+                      type: object
+                    type: array
+                    x-kubernetes-list-map-keys:
+                    - namespace
+                    - name
+                    x-kubernetes-list-type: map
                   clusterName:
                     description: |-
                       ClusterName allows you to specify the name of the GKE cluster.
@@ -3237,7 +3267,7 @@ data:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-            image: europe-west1-docker.pkg.dev/k8s-formation/k8s-lab/capg-dns-endpoint@sha256:f6c70e059fea2f3cfb10d52e6b984a5cd24fc2e158ea5f0ba4253b52869c0447
+            image: europe-west1-docker.pkg.dev/k8s-formation/k8s-lab/capg-dns-endpoint@sha256:564de73b9741e318615b1abedebce5b8c36d9aa3d7b464f07215e26ea2d5fa5b
             imagePullPolicy: IfNotPresent
             livenessProbe:
               httpGet:
@@ -3673,5 +3703,5 @@ metadata:
     argocd.argoproj.io/sync-wave: "-1"
   labels:
     provider-components: gcp-dns-recreation
-  name: v1.8.2-dns.1
+  name: v1.8.2-dns.2
   namespace: capi-operator-system

@@ -11,9 +11,11 @@ spec:
   controlPlaneAccess:
     dnsAccess: true
     ipAccess: false
-  argoCDClusterSecretRef:
-    namespace: argocd-greg
-    name: argocd-cluster-b
+  argoCDClusterSecretRefs:
+    - namespace: argocd-greg
+      name: argocd-cluster-b
+    - namespace: argocd-khalil
+      name: argocd-cluster-b
   clusterNetwork:
     useIPAliases: true
     pod:
