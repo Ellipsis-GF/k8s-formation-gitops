@@ -8,8 +8,8 @@ roleRef:
   name: cluster-admin
 subjects:
   - kind: ServiceAccount
-    name: argocd-greg
-    namespace: argocd
+    name: argocd-server
+    namespace: argocd-greg
   - kind: ServiceAccount
     name: argocd-server
     namespace: argocd-khalil
