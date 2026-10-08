@@ -16,9 +16,23 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: default
+  ignoreDifferences:
+    - group: cluster.x-k8s.io
+      kind: Cluster
+      jsonPointers:
+        - /spec/controlPlaneEndpoint
+    - group: infrastructure.cluster.x-k8s.io
+      kind: GCPManagedControlPlane
+      jsonPointers:
+        - /spec/endpoint
+    - group: infrastructure.cluster.x-k8s.io
+      kind: GCPManagedCluster
+      jsonPointers:
+        - /spec/controlPlaneEndpoint
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true

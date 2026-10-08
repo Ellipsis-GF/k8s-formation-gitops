@@ -15,6 +15,12 @@ spec:
   location: europe-west9-a
   clusterName: cluster-b
   releaseChannel: regular
+  controlPlaneAccess:
+    dnsAccess: true
+    ipAccess: false
+  argoCDClusterSecretRef:
+    namespace: argocd-khalil
+    name: argocd-cluster-b
   clusterNetwork:
     useIPAliases: true
     pod:
