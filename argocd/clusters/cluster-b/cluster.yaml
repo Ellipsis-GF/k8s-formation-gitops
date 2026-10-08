@@ -18,10 +18,6 @@ spec:
       cidrBlocks:
         - 192.168.0.0/16
 
-  controlPlaneEndpoint:
-    host: gke-cad95dd7ce9c4293b8e25218356e6e98b0c5-346709096447.europe-west9-a.gke.goog
-    port: 443
-
   controlPlaneRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: GCPManagedControlPlane
