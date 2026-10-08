@@ -8,6 +8,8 @@ metadata:
   namespace: argocd-greg
   annotations:
     argocd.argoproj.io/sync-wave: "5"
+    # Comparer le rendu apres application des valeurs par defaut Kubernetes.
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
 spec:
   project: default
   source:
@@ -44,6 +46,7 @@ spec:
             init_openmetadata_db_scripts.sql: ""
             init_airflow_db_scripts.sql: ""
           primary:
+            podManagementPolicy: OrderedReady
             persistence:
               size: 10Gi
             resourcesPreset: none
