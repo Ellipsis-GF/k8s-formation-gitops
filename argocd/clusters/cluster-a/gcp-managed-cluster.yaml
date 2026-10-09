@@ -12,3 +12,8 @@ spec:
   # https://github.com/kubernetes-sigs/cluster-api-provider-gcp/pull/1761
   network:
     name: default
+    subnets:
+      - name: cluster-a-subnet
+        region: europe-west9
+        cidrBlock: 10.20.0.0/24
+        privateGoogleAccess: true
